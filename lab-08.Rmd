@@ -1,6 +1,6 @@
 ---
 title: "Lab 08 - Predicting rain"
-author: "INSERT NAME HERE"
+author: "Joshua Mann"
 date: "`r Sys.Date()`"
 output: html_document
 ---
@@ -17,7 +17,7 @@ weather <- read.csv("data/weatherAUS.csv", header = TRUE)
 
 # Exercise 1: Exploratory Data Analysis
 
-We will start by transform any character variables that need to be transformed into categorical. Use the following code to identify them and trasform them into factors.
+We will start by transform any character variables that need to be transformed into categorical. Use the following code to identify them and transform them into factors.
 
 ```{r mutate-char}
 variables_to_transform = weather %>% 
@@ -47,12 +47,15 @@ weather %>%
 
 ```{r}
 
+
+weather_noNA <- weather %>% 
+  filter(RainTomorrow != 'NA')
 ```
 
 2. Which cities are the ones with more rain days? To do this, let's analyze the `RainToday` variable. 
 
 ```{r}
-
+plot(weather_noNA$Location, weather_noNA$RainToday)
 ```
 
 # Exercise 2: Logistic regression
@@ -67,6 +70,11 @@ weather_Portland <- weather %>%
 1. Try to predict `RainTomorrow` by fitting a linear regression using the variable `RainToday` and print the output using `tidy()`.
 
 ```{r}
+
+logistic_reg() %>%
+  set_engine("glm") %>%
+  fit(RainTomorrow ~ RainToday, data = weather_Portland) %>%
+  tidy()
 
 ```
 
